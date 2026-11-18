@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torneo de Robofútbol Relámpago — UTVAM</title>
+<meta name="description" content="Torneo de Robofútbol Relámpago de Ingenium Days 2026, UTVAM. Reglamento, cómo se juega, especificaciones del robot y registro de equipos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#080B26; --panel:rgba(12,18,58,.86); --panel-solid:#0C123A; --edge:#2F6BE0;
+  --red:#E4252E; --red2:#B3141C; --blue:#1F7BFF; --blue2:#0F4FC4; --gold:#F7B71D; --magenta:#7A1A63;
+  --white:#fff; --dim:rgba(255,255,255,.64); --faint:rgba(255,255,255,.18); --ink:#0A0D24; --floor:#2A2F3D;
+  --display:'Barlow Condensed','Arial Narrow',Impact,system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --wrap:1120px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5.5rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+body{
+  margin:0;color:var(--white);font-family:var(--body);font-size:17px;line-height:1.6;
+  background-color:var(--night);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 5% 0%,rgba(31,123,255,.34),transparent 70%),
+    radial-gradient(ellipse 55% 40% at 95% 4%,rgba(228,37,46,.26),transparent 70%),
+    radial-gradient(ellipse 80% 45% at 50% 100%,rgba(122,26,99,.5),transparent 70%);
+  background-attachment:fixed;
+}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(1rem,4vw,2rem)}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:1rem;top:1rem;z-index:100;background:var(--gold);color:var(--ink);padding:.6rem 1rem;border-radius:6px}
+
+h1,h2,h3,.ribbon,.btn,.stat b,.nav a{font-family:var(--display)}
+h2{font-size:clamp(1.9rem,5vw,2.9rem);font-style:italic;font-weight:800;text-transform:uppercase;line-height:1.05;margin:0 0 .4rem}
+h3{font-size:1.35rem;font-weight:700;margin:0 0 .35rem;line-height:1.15}
+p{margin:0 0 1rem}
+.lede{color:var(--dim);max-width:62ch;margin-bottom:2rem}
+
+.ribbon{display:inline-block;font-style:italic;font-weight:800;text-transform:uppercase;line-height:1.15;padding:.3em 1.2em;background:linear-gradient(90deg,var(--red2),var(--red) 45%);clip-path:polygon(4% 0,100% 0,96% 100%,0 100%);color:var(--white);font-size:1.05rem;letter-spacing:.01em}
+.ribbon.blue{background:linear-gradient(90deg,var(--blue2),var(--blue) 45%)}
+.ribbon.gold{background:linear-gradient(90deg,#E09A0B,var(--gold) 45%);color:var(--ink)}
+
+.btn{display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;border:2px solid var(--white);background:transparent;color:var(--white);padding:.7rem 1.4rem;border-radius:7px;font-style:italic;font-weight:800;font-size:1.1rem;text-transform:uppercase;text-decoration:none;transition:background .15s,transform .15s}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.gold:hover{background:#FFC93F;transform:translateY(-2px)}
+.btn.big{font-size:1.3rem;padding:.9rem 2rem}
+.btn[aria-disabled=true]{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Header */
+header.site{position:sticky;top:0;z-index:50;background:rgba(8,11,38,.92);backdrop-filter:blur(8px);border-bottom:2px solid var(--edge)}
+.bar{display:flex;align-items:center;gap:1rem;justify-content:space-between;padding:.7rem 0}
+.mark{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--white)}
+.mark svg{flex:none}
+.mark span{display:block;font-family:var(--display);text-transform:uppercase;line-height:1}
+.mark .ev{font-size:.78rem;font-weight:700;color:var(--dim);letter-spacing:.06em}
+.mark .nm{font-size:1.3rem;font-weight:800;font-style:italic}
+.mark .nm i{font-style:italic;color:var(--gold)}
+.nav{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
+.nav a{color:var(--dim);text-decoration:none;font-weight:700;text-transform:uppercase;font-size:1.02rem;padding:.4rem .7rem;border-radius:5px}
+.nav a:hover{color:var(--white);background:rgba(255,255,255,.08)}
+.nav a.cta{color:var(--ink);background:var(--gold)}
+.nav a.cta:hover{background:#FFC93F;color:var(--ink)}
+
+/* Hero */
+.hero{padding:clamp(2.5rem,7vw,5rem) 0 clamp(2rem,5vw,3.5rem)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.kicker{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.hero h1{margin:0 0 .6rem;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(2.6rem,8.5vw,5.4rem);line-height:.92;text-shadow:5px 5px 0 var(--red),-2px -2px 0 var(--blue2)}
+.hero h1 em{font-style:italic;display:block;color:var(--gold);text-shadow:4px 4px 0 var(--red2)}
+.hero .sub{font-size:1.1rem;color:var(--dim);max-width:46ch;margin-bottom:1.6rem}
+.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center}
+
+/* Next match card */
+.next{border:3px solid var(--gold);border-radius:14px;background:var(--panel);padding:1.5rem;box-shadow:0 0 50px rgba(247,183,29,.2)}
+.next .tent{font-family:var(--display);font-weight:700;text-transform:uppercase;color:var(--gold);font-size:.95rem;letter-spacing:.05em;margin-bottom:.6rem}
+.date{font-family:var(--display);font-style:italic;font-weight:800;text-transform:uppercase;line-height:.9}
+.date .d{font-size:clamp(3.6rem,11vw,5rem);display:block}
+.date .m{font-size:clamp(1.5rem,5vw,2rem);display:block;color:var(--gold)}
+.count{margin:.9rem 0 1.1rem;font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--white)}
+.count b{color:var(--gold);font-size:1.5rem}
+.meta{list-style:none;margin:0;padding:1.1rem 0 0;border-top:1px solid var(--faint);display:grid;gap:.75rem}
+.meta li{display:flex;gap:.7rem;align-items:flex-start}
+.meta svg{flex:none;margin-top:.2rem}
+.meta strong{display:block;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:.95rem;color:var(--dim);letter-spacing:.04em}
+
+/* Sections */
+section{padding:clamp(2.5rem,6vw,4.5rem) 0;scroll-margin-top:5rem}
+section+section{border-top:1px solid rgba(47,107,224,.3)}
+.head{margin-bottom:2rem}
+
+/* How to play */
+.play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(1.5rem,4vw,3rem);align-items:start}
+.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:1.1rem}
+.steps li{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}
+.steps li::before{content:counter(s);font-family:var(--display);font-style:italic;font-weight:800;font-size:1.6rem;color:var(--gold);background:var(--panel-solid);border:2px solid var(--gold);width:2.4rem;height:2.4rem;display:grid;place-items:center;border-radius:50%;line-height:1}
+.steps p{margin:0;color:var(--dim)}
+.steps h3{color:var(--white)}
+figure{margin:0}
+figcaption{margin-top:.8rem;font-size:.9rem;color:var(--dim);display:flex;gap:1.2rem;flex-wrap:wrap}
+figcaption span{display:flex;align-items:center;gap:.4rem}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.dot.r{background:var(--red)}.dot.b{background:var(--blue)}
+
+/* Format */
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:1.2rem;margin-bottom:1.5rem}
+.phase{border:2px solid var(--edge);border-left-width:8px;border-radius:10px;background:var(--panel);padding:1.3rem}
+.phase:nth-child(1){border-left-color:var(--red)}
+.phase:nth-child(2){border-left-color:var(--blue)}
+.phase:nth-child(3){border-left-color:var(--gold)}
+.phase .n{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:.85rem;color:var(--dim);letter-spacing:.08em;display:block;margin-bottom:.2rem}
+.phase p{margin:0;color:var(--dim);font-size:.98rem}
+
+/* Rules */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1rem;list-style:none;margin:0;padding:0;counter-reset:r}
+.rules li{counter-increment:r;background:var(--panel);border:1px solid var(--faint);border-radius:10px;padding:1.1rem 1.2rem 1.1rem 3.4rem;position:relative}
+.rules li::before{content:counter(r);position:absolute;left:1.1rem;top:1rem;font-family:var(--display);font-style:italic;font-weight:800;font-size:1.5rem;color:var(--red);line-height:1}
+.rules.spec li::before{color:var(--blue)}
+.rules h3{font-size:1.1rem;margin-bottom:.2rem}
+.rules p{margin:0;color:var(--dim);font-size:.97rem}
+.pending{display:inline-block;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:.78rem;letter-spacing:.05em;color:var(--ink);background:var(--gold);padding:.1em .6em;border-radius:3px;margin-left:.4rem;vertical-align:.1em}
+.note{margin-top:1.5rem;border-left:4px solid var(--gold);background:rgba(247,183,29,.1);padding:.9rem 1.2rem;border-radius:0 8px 8px 0;color:var(--dim);font-size:.97rem}
+.note strong{color:var(--white)}
+
+/* Register */
+#registro .wrap{position:relative}
+.reg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:start}
+.reg-box{border:3px solid var(--edge);border-radius:14px;background:var(--panel);padding:clamp(1.3rem,3vw,2rem);text-align:center}
+.reg-box h3{font-size:1.8rem;font-style:italic;text-transform:uppercase}
+.reg-box p{color:var(--dim)}
+.reg-box .btn{margin:.5rem 0 .4rem}
+.soon{font-size:.9rem;color:var(--gold);font-weight:600}
+.checklist{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.checklist li{display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:start;color:var(--dim)}
+.checklist li svg{margin-top:.35rem;flex:none}
+.checklist b{color:var(--white);font-weight:600}
+
+/* Footer */
+footer{border-top:2px solid var(--edge);background:rgba(8,11,38,.7);padding:2.5rem 0;margin-top:1rem}
+.foot{display:flex;gap:2rem;flex-wrap:wrap;justify-content:space-between;align-items:flex-start}
+.foot p{color:var(--dim);font-size:.95rem;max-width:44ch;margin:0}
+.foot .uni{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:1.15rem;color:var(--white);font-style:italic;margin-bottom:.2rem}
+.values{display:flex;gap:1.5rem;flex-wrap:wrap;list-style:none;margin:1.5rem 0 0;padding:0;font-family:var(--display);font-weight:700;text-transform:uppercase;color:var(--dim);font-size:.95rem;letter-spacing:.05em;width:100%;border-top:1px solid var(--faint);padding-top:1.2rem}
+
+@media (max-width:880px){
+  .hero-grid,.play,.reg{grid-template-columns:1fr}
+  .nav a:not(.cta){display:none}
+  html{scroll-padding-top:4.5rem}
+}
+@media (max-width:430px){
+  .mark .nm{font-size:1.05rem}
+  .mark svg{width:34px;height:34px}
+  .nav a.cta{font-size:.95rem;padding:.4rem .6rem}
+  .rules li{padding-left:3rem}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#inicio">Saltar al contenido</a>
+
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="#inicio">
+      <svg width="42" height="42" viewBox="0 0 46 46" aria-hidden="true"><rect x="3" y="3" width="40" height="40" rx="4" fill="#2A2F3D" stroke="#C9CCD4" stroke-width="2.5"/><line x1="23" y1="3" x2="23" y2="43" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/><rect x="1" y="15" width="7" height="16" fill="#E4252E"/><rect x="38" y="15" width="7" height="16" fill="#1F7BFF"/><circle cx="16" cy="17" r="3" fill="#E4252E"/><circle cx="14" cy="29" r="3" fill="#E4252E"/><circle cx="30" cy="17" r="3" fill="#1F7BFF"/><circle cx="32" cy="29" r="3" fill="#1F7BFF"/></svg>
+      <span><span class="ev">Ingenium Days 2026</span><span class="nm">Robofútbol <i>Relámpago</i></span></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#como-se-juega">Cómo se juega</a>
+      <a href="#formato">Formato</a>
+      <a href="#reglamento">Reglamento</a>
+      <a href="#robot">Tu robot</a>
+      <a href="#registro" class="cta">Registrarme</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">
+        <span class="ribbon">Mecatrónica</span>
+        <span class="ribbon blue">Mantenimiento Industrial</span>
+      </div>
+      <h1>Torneo de Robofútbol <em>Relámpago</em></h1>
+      <p class="sub">Dos robots, una cancha VEX y tres minutos para meter más pelotas de tu color que el equipo contrario. Arma tu equipo, construye tu robot y súbete a la cancha.</p>
+      <div class="hero-cta">
+        <a class="btn gold big" href="#registro">Registrar mi equipo</a>
+        <a class="btn" href="#como-se-juega">Ver cómo se juega</a>
+      </div>
+    </div>
+
+    <aside class="next" aria-labelledby="prox">
+      <p class="tent" id="prox">Próximo encuentro · fecha tentativa</p>
+      <p class="date"><span class="d">11</span><span class="m">de diciembre</span></p>
+      <p class="count" id="cuenta" aria-live="polite"></p>
+      <ul class="meta">
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span><strong>Horario</strong>A partir de las 11:00 a.m.</span>
+        </li>
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="2.2" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <span><strong>Sede</strong>Laboratorio de VEX, instalaciones de la universidad</span>
+        </li>
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5"/></svg>
+          <span><strong>Duración de cada partido</strong>3 minutos</span>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section id="como-se-juega">
+  <div class="wrap">
+    <div class="head">
+      <span class="ribbon">¿Cómo se juega?</span>
+      <h2 style="margin-top:.8rem">Mete las pelotas de tu color en tu zona</h2>
+      <p class="lede">La cancha se divide en dos mitades. Cada equipo tiene su color y su zona de anotación. Gana quien logre introducir más pelotas válidas en la zona que le corresponde.</p>
+    </div>
+    <div class="play">
+      <ol class="steps">
+        <li><div><h3>Identifica tu color</h3><p>Al equipo se le asigna el color rojo o el azul. Solo cuentan las pelotas de tu propio color.</p></div></li>
+        <li><div><h3>Lleva las pelotas a tu zona</h3><p>El robot debe introducir las pelotas en la zona de anotación que le corresponde, dentro de la cancha VEX.</p></div></li>
+        <li><div><h3>Tres minutos de reloj</h3><p>Cada encuentro dura 3 minutos. Durante ese tiempo nadie puede tocar las pelotas ni los robots con las manos.</p></div></li>
+        <li><div><h3>El conteo decide</h3><p>Al sonar el silbatazo final se cuentan las pelotas válidas en cada zona. El número mayor gana el partido.</p></div></li>
+      </ol>
+
+      <figure>
+        <svg viewBox="0 0 440 280" role="img" aria-labelledby="canchaT">
+          <title id="canchaT">Diagrama de la cancha: zona roja a la izquierda con pelotas rojas y zona azul a la derecha con pelotas azules, separadas por una línea central punteada.</title>
+          <rect x="4" y="4" width="432" height="272" rx="8" fill="#2A2F3D" stroke="#C9CCD4" stroke-width="5"/>
+          <g stroke="rgba(255,255,255,.14)" stroke-width="1.5">
+            <path d="M110 6V274M220 6V274M330 6V274M6 95H434M6 185H434"/>
+          </g>
+          <line x1="220" y1="6" x2="220" y2="274" stroke="#fff" stroke-width="4" stroke-dasharray="12 10"/>
+          <rect x="4" y="80" width="26" height="120" fill="#E4252E" stroke="#fff" stroke-width="3"/>
+          <rect x="410" y="80" width="26" height="120" fill="#1F7BFF" stroke="#fff" stroke-width="3"/>
+          <circle cx="220" cy="140" r="46" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
+          <g fill="#E4252E" stroke="rgba(0,0,0,.35)" stroke-width="1.5">
+            <circle cx="95" cy="70" r="13"/><circle cx="150" cy="140" r="13"/><circle cx="105" cy="205" r="13"/><circle cx="262" cy="92" r="13"/>
+          </g>
+          <g fill="#1F7BFF" stroke="rgba(0,0,0,.35)" stroke-width="1.5">
+            <circle cx="345" cy="78" r="13"/><circle cx="292" cy="150" r="13"/><circle cx="356" cy="200" r="13"/><circle cx="175" cy="215" r="13"/>
+          </g>
+          <text x="60" y="258" font-family="Barlow Condensed,sans-serif" font-size="19" font-weight="700" fill="#fff" font-style="italic">ZONA ROJA</text>
+          <text x="310" y="258" font-family="Barlow Condensed,sans-serif" font-size="19" font-weight="700" fill="#fff" font-style="italic">ZONA AZUL</text>
+        </svg>
+        <figcaption>
+          <span><i class="dot r"></i>Pelotas rojas a la zona roja</span>
+          <span><i class="dot b"></i>Pelotas azules a la zona azul</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="formato">
+  <div class="wrap">
+    <div class="head">
+      <span class="ribbon blue">Formato del torneo</span>
+      <h2 style="margin-top:.8rem">De todos contra todos a la gran final</h2>
+      <p class="lede">El torneo arranca con una fase donde todos los equipos se enfrentan entre sí. Los mejores pasan a eliminación directa.</p>
+    </div>
+    <div class="phases">
+      <article class="phase">
+        <span class="n">Fase 1</span><h3>Todos contra todos</h3>
+        <p>Cada equipo juega contra todos los demás de su grupo. La victoria vale 3 puntos y el empate 1. La tabla define a los clasificados.</p>
+      </article>
+      <article class="phase">
+        <span class="n">Fase 2</span><h3>Semifinales</h3>
+        <p>Los dos mejores de cada grupo se cruzan: 1.º A contra 2.º B y 1.º B contra 2.º A. Aquí ya no hay empates.</p>
+      </article>
+      <article class="phase">
+        <span class="n">Fase 3</span><h3>Gran final</h3>
+        <p>Los ganadores de las semifinales se juegan el título. Si terminan empatados se define con gol de oro o penales.</p>
+      </article>
+    </div>
+    <p class="note"><strong>Duración:</strong> todos los encuentros, desde la fase de grupos hasta la final, duran 3 minutos.</p>
+  </div>
+</section>
+
+<section id="reglamento">
+  <div class="wrap">
+    <div class="head">
+      <span class="ribbon">Reglamento de competencia</span>
+      <h2 style="margin-top:.8rem">Las seis reglas del partido</h2>
+      <p class="lede">Léelas con tu equipo antes de registrarte. En la cancha se aplican sin excepción.</p>
+    </div>
+    <ol class="rules">
+      <li><h3>Objetivo</h3><p>Cada equipo deberá introducir las pelotas de su propio color en la zona correspondiente de la cancha.</p></li>
+      <li><h3>Puntuación</h3><p>Gana el equipo que consiga introducir la mayor cantidad de pelotas válidas en su zona de anotación.</p></li>
+      <li><h3>Duración</h3><p>Cada encuentro tendrá una duración de 3 minutos.</p></li>
+      <li><h3>Desarrollo del partido</h3><p>Los robots deberán competir dentro de la cancha VEX Robotics, respetando las zonas de juego.</p></li>
+      <li><h3>Intervención</h3><p>Durante el partido no se permitirá manipular manualmente las pelotas ni intervenir físicamente en los robots.</p></li>
+      <li><h3>Juego limpio</h3><p>No se permitirá realizar acciones deliberadas que dañen al robot contrario o a las instalaciones.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="robot">
+  <div class="wrap">
+    <div class="head">
+      <span class="ribbon blue">Especificaciones del robot</span>
+      <h2 style="margin-top:.8rem">Qué debe cumplir tu máquina</h2>
+      <p class="lede">Empieza a construir con lo que ya está definido. Las medidas y el peso se publicarán aquí en cuanto se confirmen.</p>
+    </div>
+    <ol class="rules spec">
+      <li><h3>Dimensiones máximas <span class="pending">Por definir</span></h3><p>Largo, ancho y alto todavía están por definirse. Se anunciarán en esta página antes del torneo.</p></li>
+      <li><h3>Peso máximo <span class="pending">Por definir</span></h3><p>El límite de peso se publicará junto con las dimensiones.</p></li>
+      <li><h3>Base del robot</h3><p>El robot deberá contar con una base estructural estable que permita sostener sus componentes y mecanismos durante la competencia.</p></li>
+    </ol>
+    <p class="note"><strong>Mientras tanto:</strong> concentra el trabajo en una base firme y en el mecanismo que recoge y suelta las pelotas. Eso no cambia con las medidas finales.</p>
+  </div>
+</section>
+
+<section id="registro">
+  <div class="wrap">
+    <div class="head">
+      <span class="ribbon gold">Registro de equipos</span>
+      <h2 style="margin-top:.8rem">Aparta el lugar de tu equipo</h2>
+      <p class="lede">El registro se hace en línea y toma unos minutos. Ten a la mano los datos de tu equipo antes de empezar.</p>
+    </div>
+    <div class="reg">
+      <ul class="checklist">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="3" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span><b>Nombre del equipo</b> y nombre del robot.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="3" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span><b>Carrera y cuatrimestre</b> de los integrantes.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="3" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span><b>Nombres y matrículas</b> de todos los integrantes.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="3" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span><b>Capitán y su contacto:</b> correo y número de celular.</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="3" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 7"/></svg><span><b>Confirmación</b> de que el equipo leyó el reglamento.</span></li>
+      </ul>
+
+      <div class="reg-box">
+        <h3>Formulario de registro</h3>
+        <p id="regTexto">Llena el formulario y recibirás la confirmación de tu lugar.</p>
+        <a class="btn gold big" id="regBtn" href="#registro" aria-disabled="true">Abrir formulario</a>
+        <p class="soon" id="regNota">El enlace se habilitará en los próximos días.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <p class="uni">Universidad Tecnológica de la Zona Metropolitana del Valle de México</p>
+        <p>Carreras de Mecatrónica y Mantenimiento Industrial · Ingenium Days 2026</p>
+      </div>
+      <div>
+        <p class="uni">Sede</p>
+        <p>Laboratorio de VEX, instalaciones de la universidad. 11 de diciembre, a partir de las 11:00 a.m. Fecha tentativa.</p>
+      </div>
+      <ul class="values">
+        <li>Disciplina</li><li>Compañerismo</li><li>Trabajo en equipo</li><li>Grandes historias</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ====== CONFIGURACIÓN: pega aquí el enlace de tu formulario de Google ====== */
+  var FORM_URL = "";   // ejemplo: "https://forms.gle/abcd1234"
+  var FECHA    = "2026-12-11T11:00:00-06:00";
+  /* ========================================================================== */
+
+  var btn = document.getElementById('regBtn'),
+      nota = document.getElementById('regNota');
+  if (FORM_URL) {
+    btn.href = FORM_URL;
+    btn.target = '_blank';
+    btn.rel = 'noopener';
+    btn.removeAttribute('aria-disabled');
+    nota.textContent = 'Se abre en una pestaña nueva.';
+  } else {
+    btn.addEventListener('click', function(e){ e.preventDefault(); });
+  }
+
+  var out = document.getElementById('cuenta'),
+      dias = Math.ceil((new Date(FECHA) - new Date()) / 86400000);
+  if (isNaN(dias)) out.remove();
+  else if (dias > 1) out.innerHTML = 'Faltan <b>' + dias + '</b> días';
+  else if (dias === 1) out.innerHTML = '<b>Mañana</b>';
+  else if (dias === 0) out.innerHTML = '<b>¡Hoy es el día!</b>';
+  else out.textContent = 'Encuentro celebrado';
+})();
+</script>
+</body>
+</html>
