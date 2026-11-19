@@ -121,9 +121,20 @@ figcaption span{display:flex;align-items:center;gap:.4rem}
 .rules li{counter-increment:r;background:var(--panel);border:1px solid var(--faint);border-radius:10px;padding:1.1rem 1.2rem 1.1rem 3.4rem;position:relative}
 .rules li::before{content:counter(r);position:absolute;left:1.1rem;top:1rem;font-family:var(--display);font-style:italic;font-weight:800;font-size:1.5rem;color:var(--red);line-height:1}
 .rules.spec li::before{color:var(--blue)}
+.rules.spec{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
 .rules h3{font-size:1.1rem;margin-bottom:.2rem}
 .rules p{margin:0;color:var(--dim);font-size:.97rem}
 .pending{display:inline-block;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:.78rem;letter-spacing:.05em;color:var(--ink);background:var(--gold);padding:.1em .6em;border-radius:3px;margin-left:.4rem;vertical-align:.1em}
+.dims{display:flex;gap:.5rem;flex-wrap:wrap;margin:.7rem 0 0}
+.dim{border:2px solid var(--blue);border-radius:8px;background:rgba(31,123,255,.12);padding:.4rem .65rem;text-align:center;flex:1 1 0;min-width:4.4rem}
+.dim b{display:block;font-family:var(--display);font-style:italic;font-weight:800;font-size:1.5rem;white-space:nowrap;line-height:1.05;color:var(--white)}
+.dim span{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:.78rem;letter-spacing:.05em;color:var(--dim)}
+.stl{margin-top:1.5rem;border:3px solid var(--gold);border-radius:14px;background:var(--panel);padding:clamp(1.2rem,3vw,1.8rem);display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;box-shadow:0 0 40px rgba(247,183,29,.18)}
+.stl-txt{flex:1 1 300px;min-width:0}
+.stl h3{font-size:1.5rem;font-style:italic;text-transform:uppercase;margin-bottom:.3rem}
+.stl p{margin:0;color:var(--dim)}
+.stl .soon{margin-top:.5rem}
+.stl-btns{display:flex;gap:.7rem;flex-wrap:wrap}
 .note{margin-top:1.5rem;border-left:4px solid var(--gold);background:rgba(247,183,29,.1);padding:.9rem 1.2rem;border-radius:0 8px 8px 0;color:var(--dim);font-size:.97rem}
 .note strong{color:var(--white)}
 
@@ -188,7 +199,7 @@ footer{border-top:2px solid var(--edge);background:rgba(8,11,38,.7);padding:2.5r
         <span class="ribbon">Carrera de Mecatrónica</span>
       </div>
       <h1>Torneo de Robofútbol <em>Relámpago</em></h1>
-      <p class="sub">Tres robots, una cancha VEX y tres minutos para meter más pelotas de tu color que el equipo contrario. Arma tu equipo, construye tu robot y súbete a la cancha.</p>
+      <p class="sub">Dos robots, una cancha VEX y tres minutos para meter más pelotas de tu color que el equipo contrario. Arma tu equipo, construye tu robot y súbete a la cancha.</p>
       <div class="hero-cta">
         <a class="btn gold big" href="#registro">Registrar mi equipo</a>
         <a class="btn" href="#como-se-juega">Ver cómo se juega</a>
@@ -309,14 +320,34 @@ footer{border-top:2px solid var(--edge);background:rgba(8,11,38,.7);padding:2.5r
     <div class="head">
       <span class="ribbon blue">Especificaciones del robot</span>
       <h2 style="margin-top:.8rem">Qué debe cumplir tu máquina</h2>
-      <p class="lede">Empieza a construir con lo que ya está definido. Las medidas y el peso se publicarán aquí en cuanto se confirmen.</p>
+      <p class="lede">Las medidas máximas ya están definidas y el chasis oficial es obligatorio. Solo falta confirmar el peso.</p>
     </div>
     <ol class="rules spec">
-      <li><h3>Dimensiones máximas <span class="pending">Por definir</span></h3><p>Largo, ancho y alto todavía están por definirse. Se anunciarán en esta página antes del torneo.</p></li>
-      <li><h3>Peso máximo <span class="pending">Por definir</span></h3><p>El límite de peso se publicará junto con las dimensiones.</p></li>
+      <li>
+        <h3>Dimensiones máximas</h3>
+        <p>El robot no debe exceder estas medidas en ninguno de sus lados.</p>
+        <div class="dims">
+          <div class="dim"><b>15 cm</b><span>largo</span></div>
+          <div class="dim"><b>12 cm</b><span>ancho</span></div>
+          <div class="dim"><b>10 cm</b><span>alto</span></div>
+        </div>
+      </li>
+      <li><h3>Peso máximo <span class="pending">Por definir</span></h3><p>El límite de peso se publicará en esta página en cuanto se confirme.</p></li>
+      <li><h3>Chasis oficial <span class="pending">Obligatorio</span></h3><p>Todos los equipos deben competir con el chasis oficial del torneo. Descárgalo e imprímelo en 3D.</p></li>
       <li><h3>Base del robot</h3><p>El robot deberá contar con una base estructural estable que permita sostener sus componentes y mecanismos durante la competencia.</p></li>
     </ol>
-    <p class="note"><strong>Mientras tanto:</strong> concentra el trabajo en una base firme y en el mecanismo que recoge y suelta las pelotas. Eso no cambia con las medidas finales.</p>
+
+    <div class="stl">
+      <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#F7B71D" stroke-width="1.8" aria-hidden="true"><path d="M12 2.6l8.4 4.85v9.7L12 22 3.6 17.15v-9.7z"/><path d="M3.6 7.45L12 12.3l8.4-4.85M12 12.3V22"/></svg>
+      <div class="stl-txt">
+        <h3>Chasis oficial en STL</h3>
+        <p>Es el mismo chasis para todos los equipos. Descarga los archivos, imprímelos en 3D y monta sobre el chasis tus motores, tu electrónica y tu mecanismo.</p>
+        <p class="soon" id="stlNota" hidden>Los archivos se subirán en los próximos días.</p>
+      </div>
+      <div class="stl-btns" id="stlBtns"></div>
+    </div>
+
+    <p class="note"><strong>Antes de imprimir:</strong> revisa que tu diseño quepa dentro de las medidas máximas con todo montado, incluidos cables, ruedas y el mecanismo que recoge las pelotas.</p>
   </div>
 </section>
 
@@ -369,7 +400,13 @@ footer{border-top:2px solid var(--edge);background:rgba(8,11,38,.7);padding:2.5r
 <script>
 (function(){
   /* ====== CONFIGURACIÓN: pega aquí el enlace de tu formulario de Google ====== */
-  var FORM_URL = "";   // ejemplo: "https://forms.gle/abcd1234"
+  var FORM_URL = "";             // ejemplo: "https://forms.gle/abcd1234"
+  // Un renglón por archivo. "nombre" es lo que dice el botón; "archivo" es el nombre
+  // exacto del .stl que subes junto a index.html. Agrega o quita renglones libremente.
+  var STL_ARCHIVOS = [
+    { nombre: "Chasis, parte 1", archivo: "chasis-1.stl" },
+    { nombre: "Chasis, parte 2", archivo: "chasis-2.stl" }
+  ];
   var FECHA    = "2026-12-11T11:00:00-06:00";
   /* ========================================================================== */
 
@@ -384,6 +421,38 @@ footer{border-top:2px solid var(--edge);background:rgba(8,11,38,.7);padding:2.5r
   } else {
     btn.addEventListener('click', function(e){ e.preventDefault(); });
   }
+
+  /* Un botón por archivo. Cada uno se habilita solo cuando el .stl existe junto a la página */
+  var cont = document.getElementById('stlBtns'),
+      sNota = document.getElementById('stlNota'),
+      vivos = 0;
+  function revisarNota(){ sNota.hidden = vivos > 0; }
+
+  STL_ARCHIVOS.forEach(function(item){
+    if (!item || !item.archivo) return;
+    var a = document.createElement('a');
+    a.className = 'btn gold';
+    a.textContent = item.nombre || item.archivo;
+    a.href = '#robot';
+    a.setAttribute('aria-disabled','true');
+    a.addEventListener('click', function(e){
+      if (a.getAttribute('aria-disabled')) e.preventDefault();
+    });
+    cont.appendChild(a);
+
+    function habilitar(){
+      a.href = item.archivo;
+      a.setAttribute('download','');
+      a.removeAttribute('aria-disabled');
+      vivos++;
+      revisarNota();
+    }
+    if (/^https?:/i.test(item.archivo) || location.protocol === 'file:') habilitar();
+    else fetch(item.archivo, {method:'HEAD'})
+           .then(function(r){ if (r.ok) habilitar(); })
+           .catch(function(){});
+  });
+  revisarNota();
 
   var out = document.getElementById('cuenta'),
       dias = Math.ceil((new Date(FECHA) - new Date()) / 86400000);
